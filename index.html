@@ -7,6 +7,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
+        // Prevent popups
+        window.open = function() {
+            console.log('Popup blocked');
+            return null;
+        };
+        window.alert = function() {
+            console.log('Alert blocked');
+        };
+        window.confirm = function() {
+            console.log('Confirm dialog blocked');
+            return true;
+        };
+        window.prompt = function() {
+            console.log('Prompt dialog blocked');
+            return null;
+        };
+
         // Simple Ad Blocker
         document.addEventListener('DOMContentLoaded', function() {
             // Common ad selectors to block
@@ -50,6 +67,14 @@
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
+            });
+
+            // Block common popup triggers
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('a[target="_blank"]')) {
+                    e.preventDefault();
+                    console.log('New tab/window popup blocked');
+                }
             });
         });
     </script>
